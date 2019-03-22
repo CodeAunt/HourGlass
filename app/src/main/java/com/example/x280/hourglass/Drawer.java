@@ -126,29 +126,36 @@ public class Drawer extends AppCompatActivity
             startService(new Intent(this, AlarmService.class));
         }
         //////////////////////////////////////////////////////////////
+        //delated duplicated operation for share and about
 
-       //share in text only
-//        findViewById(R.id.nav_share).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent sendIntent = new Intent();
-//
-//                //Send message to share
-//                sendIntent.setAction(Intent.ACTION_SEND);
-//                sendIntent.putExtra(Intent.EXTRA_TEXT,
-//                        getString(R.string.share_text));
-//                sendIntent.setType("text/plain");
-//                startActivity(sendIntent);
-//            }
-//        });
+        btnNotification.setOnClickListener(new View.OnClickListener() {
 
-        // about
-//        findViewById(R.id.nav_about).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(Drawer.this, AboutActivity.class));
-//            }
-//        });
+            @Override
+            public void onClick(View v) {
+                Bitmap btm = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.msg);
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                        MainActivity.this).setSmallIcon(R.drawable.msg)
+                        .setContentTitle("Notification")
+                        .setContentText("debug");
+                mBuilder.setTicker("New message");/
+                mBuilder.setNumber(12);
+                mBuilder.setLargeIcon(btm);
+                mBuilder.setAutoCancel(true);
+
+                //Intent
+                Intent resultIntent = new Intent(MainActivity.this,
+                        ResultActivity.class);
+                PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                        MainActivity.this, 0, resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentIntent(resultPendingIntent);
+
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(0, mBuilder.build());
+            }
+        });
     }
 
     @Override
@@ -181,6 +188,7 @@ public class Drawer extends AppCompatActivity
                     getString(R.string.share_text));
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
+
         } else if (id == R.id.nav_about){
             startActivity(new Intent(Drawer.this, AboutActivity.class));
         }

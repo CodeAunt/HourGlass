@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * created 20190319 zhouzili
@@ -16,7 +17,8 @@ public class AlarmUtil {
             long start = System.currentTimeMillis();
             Intent in = new Intent("ALARM_RECEIVER");
             PendingIntent pi = PendingIntent.getBroadcast(context, 0, in, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, start + 86400 * 1000, pi);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, start +  3 * 1000, pi);//86400
+            Log.d("AlarmDebug", "alarm set");
         }
     }
 }
