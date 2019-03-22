@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorGray">#4A4A4A</color>
+    <color name="gray">#EEEEEE</color>
+    <color name="gray_darken">#DDDDDD</color>
+<!--piechartcolor-->
+    <color name="pie_red">#EE8888</color>
+    <color name="pie_blue">#8888EE</color>
+    <color name="pie_pink">#ff80ab</color>
+    <color name="pie_green">#AEEA00</color>
+    <color name="pie_orange">#FFC300</color>
+    <color name="pie_brightBlue">#18FFFF</color>
+    <color name="pie_purple">#311B92</color>
+
+</resources>
