@@ -20,7 +20,7 @@
 
     <string name="enable_apps_monitor">Enable HourGlass monitor other apps</string>
 
-    <string name="enable_apps_monitoring">Apps monitoring</string>
+    <string name="sort_by">Sort by </string>
 
     <string name="contact">zhouzili98@hotmail.com</string>
 
@@ -29,7 +29,7 @@
     <string name="hide_system_apps">Hide system Apps</string>
     <string name="hide_uninstall_apps">Hide uninstalled Apps</string>
 
-    <string name="ignore">Ignore this app</string>
+    <string name="ignore">Ignore</string>
     <string name="ignore_hint">Apps in this list will be hidden</string>
     <string name="ignore_list">Ignore list</string>
     <string name="ignore_success">Move to ignore list successfully</string>

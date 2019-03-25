@@ -36,17 +36,23 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.x280.hourglass.Service.AlarmService;
 import com.example.x280.hourglass.Service.AppService;
 import com.example.x280.hourglass.Service.AppUtil;
+import com.example.x280.hourglass.Service.TimeValueFormatter;
 import com.example.x280.hourglass.data.AppItem;
 import com.example.x280.hourglass.data.DataManager;
 import com.example.x280.hourglass.data.SettingManager;
 import com.example.x280.hourglass.data.db.DbIgnoreExecutor;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +85,8 @@ public class Drawer extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+//        ActionBar actionBar=getActionBar();
+//        actionBar.hide();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -128,34 +136,33 @@ public class Drawer extends AppCompatActivity
         //////////////////////////////////////////////////////////////
         //delated duplicated operation for share and about
 
-        btnNotification.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Bitmap btm = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.msg);
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                        MainActivity.this).setSmallIcon(R.drawable.msg)
-                        .setContentTitle("Notification")
-                        .setContentText("debug");
-                mBuilder.setTicker("New message");/
-                mBuilder.setNumber(12);
-                mBuilder.setLargeIcon(btm);
-                mBuilder.setAutoCancel(true);
-
-                //Intent
-                Intent resultIntent = new Intent(MainActivity.this,
-                        ResultActivity.class);
-                PendingIntent resultPendingIntent = PendingIntent.getActivity(
-                        MainActivity.this, 0, resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentIntent(resultPendingIntent);
-
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(0, mBuilder.build());
-            }
-        });
+//        btnNotification.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bitmap btm = BitmapFactory.decodeResource(getResources(),
+//                        R.drawable.msg);
+//                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+//                        MainActivity.this).setSmallIcon(R.drawable.msg)
+//                        .setContentTitle("Notification")
+//                        .setContentText("debug");
+//                mBuilder.setTicker("New message");
+//                mBuilder.setNumber(12);
+//                mBuilder.setLargeIcon(btm);
+//                mBuilder.setAutoCancel(true);
+//
+//                //Intent
+//                Intent resultIntent = new Intent(MainActivity.this,
+//                        ResultActivity.class);
+//                PendingIntent resultPendingIntent = PendingIntent.getActivity(
+//                        MainActivity.this, 0, resultIntent,
+//                        PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//                mBuilder.setContentIntent(resultPendingIntent);
+//
+//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//                mNotificationManager.notify(0, mBuilder.build());
+//            }
+//        });
     }
 
     @Override
@@ -203,7 +210,7 @@ public class Drawer extends AppCompatActivity
     private void initLayout() {
         mSwipe = findViewById(R.id.swipe_refresh);
         if (DataManager.getInstance().hasPermission(getApplicationContext())) {
-            mSwitchText.setText(R.string.enable_apps_monitoring);
+            mSwitchText.setText(R.string.sort_by);
             mSwitch.setVisibility(View.GONE); //set invisible
             mChart.setVisibility(View.VISIBLE);
             mSort.setVisibility(View.VISIBLE);
@@ -224,6 +231,12 @@ public class Drawer extends AppCompatActivity
         pieData.setDrawValues(true);
         mChart.setData(pieData);
         mChart.invalidate();
+        //remove the description...
+        Description description = new Description();
+        description.setText("");
+        mChart.setDescription(description);
+        mChart.setCenterTextColor(R.color.text_black);
+        mChart.setCenterTextSize(18);
     }
 
     private void applyPieChart(){
@@ -233,17 +246,35 @@ public class Drawer extends AppCompatActivity
         pieChartColors.add(getResources().getColor(R.color.pie_red));
         pieChartColors.add(getResources().getColor(R.color.pie_blue));
         pieChartColors.add(getResources().getColor(R.color.pie_pink));
-        pieChartColors.add(getResources().getColor(R.color.pie_green));
+        pieChartColors.add(getResources().getColor(R.color.pie_lightgreen));
         pieChartColors.add(getResources().getColor(R.color.pie_orange));
         pieChartColors.add(getResources().getColor(R.color.pie_brightBlue));
-        pieChartColors.add(getResources().getColor(R.color.pie_purple));
+        pieChartColors.add(getResources().getColor(R.color.pie_green));
+        pieChartColors.add(getResources().getColor(R.color.pie_redorange));
+        pieChartColors.add(getResources().getColor(R.color.pie_skyblue));
+        pieChartColors.add(getResources().getColor(R.color.pie_magenta));
+        pieChartColors.add(getResources().getColor(R.color.pie_blue));
+        pieChartColors.add(getResources().getColor(R.color.pie_pink));
+        pieChartColors.add(getResources().getColor(R.color.pie_lightgreen));
+        pieChartColors.add(getResources().getColor(R.color.pie_orange));
+        pieChartColors.add(getResources().getColor(R.color.pie_brightBlue));
+        pieChartColors.add(getResources().getColor(R.color.pie_green));
+        pieChartColors.add(getResources().getColor(R.color.pie_redorange));
+        pieChartColors.add(getResources().getColor(R.color.pie_skyblue));
+        pieChartColors.add(getResources().getColor(R.color.pie_magenta));
+
         dataSet.setColors(pieChartColors);
+        dataSet.setValueTextColor(R.color.text_black);
+        dataSet.setValueTextSize(12);
+        dataSet.setDrawIcons(false);
+
+        dataSet.setValueFormatter(new TimeValueFormatter());
 
         PieData pieData = new PieData(dataSet);
         pieData.setDrawValues(true);
+
         mChart.setData(pieData);
         mChart.invalidate();
-
     }
 
     // init sort
@@ -389,36 +420,20 @@ public class Drawer extends AppCompatActivity
         getMenuInflater().inflate(R.menu.drawer, menu);
         return true;
     }
-
 //
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
+//        switch (item.getItemId()) {
+//            case R.id.settings:
+//                startActivityForResult(new Intent(Drawer.this, Drawer.class), 1);
+//                return true;
+//            case R.id.sort:
+//                triggerSort();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
 //        }
-//
-//        return super.onOptionsItemSelected(item);
 //    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings:
-                startActivityForResult(new Intent(Drawer.this, Drawer.class), 1);
-                return true;
-            case R.id.sort:
-                triggerSort();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -481,12 +496,10 @@ public class Drawer extends AppCompatActivity
             } else {
                 holder.mProgress.setProgress(0);
             }
-//            GlideApp.with(Drawer.this)
-//                    .load(AppUtil.getPackageIcon(Drawer.this, item.mPackageName))
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .transition(new DrawableTransitionOptions().crossFade())
-//                    .into(holder.mIcon);
-//            holder.setOnClickListener(item);
+            Glide.with(Drawer.this)
+                    .load(AppUtil.getPackageIcon(Drawer.this, item.mPackageName))
+                    .transition(new DrawableTransitionOptions().crossFade())
+                    .into(holder.mIcon);
         }
 
         @Override
@@ -513,7 +526,6 @@ public class Drawer extends AppCompatActivity
             }
 
 //            //invalid method............................
-
 //            @SuppressLint("RestrictedApi")
 //            void setOnClickListener(final AppItem item) {
 //                itemView.setOnClickListener(new View.OnClickListener() {
@@ -573,19 +585,21 @@ public class Drawer extends AppCompatActivity
             //add new item to Pie Chart set
             appChartList.clear();
             float sharePercent;
+            long accumulateShare = 0;
             for (AppItem item : appItems) {
                 item.mCanOpen = mPackageManager.getLaunchIntentForPackage(item.mPackageName) != null;
                 //add new item to Pie Chart set
-                if(item.mUsageTime>0){
-                    sharePercent = (float)item.mUsageTime/mTotal;
-                    appChartList.add(new PieEntry(sharePercent * 100f, item.mName));
-                    Log.d("chartDebug", format("pie %f", sharePercent * 100f));
+                sharePercent = (float)item.mUsageTime/mTotal;
+                if(sharePercent>0.02f){
+                    accumulateShare += item.mUsageTime;
+                    appChartList.add(new PieEntry(item.mUsageTime, item.mName));
                 }
             }
+            appChartList.add(new PieEntry(mTotal-accumulateShare, "others"));
             //invalidate the chart!
             applyPieChart();
-
-            mSwitchText.setText(format(getResources().getString(R.string.total), AppUtil.formatMilliSeconds(mTotal)));
+//            mSwitchText.setText(format(getResources().getString(R.string.total), AppUtil.formatMilliSeconds(mTotal)));
+            mChart.setCenterText(AppUtil.formatMilliSeconds(mTotal));
             // stop refreshing
             mSwipe.setRefreshing(false);
             mAdapter.updateData(appItems);

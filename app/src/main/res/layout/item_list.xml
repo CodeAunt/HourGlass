@@ -40,9 +40,10 @@
         android:id="@+id/app_usage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/app_image"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
         android:textSize="14sp" />
 
     <ProgressBar
@@ -55,7 +56,6 @@
         android:layout_marginTop="4dp"
         android:minHeight="4dp"
         android:progress="40"
-        android:progressDrawable="@drawable/bg_progress"
-        android:visibility="gone" />
+        android:progressDrawable="@drawable/bg_progress" />
 
 </RelativeLayout>
