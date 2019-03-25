@@ -26,8 +26,8 @@
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pie_chart"
-                    android:layout_width="280dp"
-                    android:layout_height="280dp"
+                    android:layout_width="320dp"
+                    android:layout_height="320dp"
                     android:visibility="gone">
 
                 </com.github.mikephil.charting.charts.PieChart>

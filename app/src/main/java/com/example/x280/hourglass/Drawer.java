@@ -1,12 +1,15 @@
 package com.example.x280.hourglass;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,9 +40,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.example.x280.hourglass.Service.AlarmService;
+import com.example.x280.hourglass.Service.AlarmReceiver;
 import com.example.x280.hourglass.Service.AppService;
 import com.example.x280.hourglass.Service.AppUtil;
 import com.example.x280.hourglass.Service.TimeValueFormatter;
@@ -52,7 +54,6 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,38 +132,10 @@ public class Drawer extends AppCompatActivity
 
         if (DataManager.getInstance().hasPermission(getApplicationContext())) {
             process();
-            startService(new Intent(this, AlarmService.class));
+            setAlarm();
         }
         //////////////////////////////////////////////////////////////
         //delated duplicated operation for share and about
-
-//        btnNotification.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Bitmap btm = BitmapFactory.decodeResource(getResources(),
-//                        R.drawable.msg);
-//                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-//                        MainActivity.this).setSmallIcon(R.drawable.msg)
-//                        .setContentTitle("Notification")
-//                        .setContentText("debug");
-//                mBuilder.setTicker("New message");
-//                mBuilder.setNumber(12);
-//                mBuilder.setLargeIcon(btm);
-//                mBuilder.setAutoCancel(true);
-//
-//                //Intent
-//                Intent resultIntent = new Intent(MainActivity.this,
-//                        ResultActivity.class);
-//                PendingIntent resultPendingIntent = PendingIntent.getActivity(
-//                        MainActivity.this, 0, resultIntent,
-//                        PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                mBuilder.setContentIntent(resultPendingIntent);
-//
-//                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                mNotificationManager.notify(0, mBuilder.build());
-//            }
-//        });
     }
 
     @Override
@@ -238,6 +211,16 @@ public class Drawer extends AppCompatActivity
         mChart.setCenterTextColor(R.color.text_black);
         mChart.setCenterTextSize(18);
     }
+
+
+    private void setAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
+        long firstTime = 15000 + SystemClock.elapsedRealtime();
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime, 15000, sender);
+    }
+
 
     private void applyPieChart(){
         PieDataSet dataSet = new PieDataSet(appChartList," ");
@@ -590,7 +573,7 @@ public class Drawer extends AppCompatActivity
                 item.mCanOpen = mPackageManager.getLaunchIntentForPackage(item.mPackageName) != null;
                 //add new item to Pie Chart set
                 sharePercent = (float)item.mUsageTime/mTotal;
-                if(sharePercent>0.02f){
+                if(sharePercent>0.035f){
                     accumulateShare += item.mUsageTime;
                     appChartList.add(new PieEntry(item.mUsageTime, item.mName));
                 }

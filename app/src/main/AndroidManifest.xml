@@ -28,9 +28,10 @@
                 <!--<action android:name="android.intent.action.MAIN" />-->
             <!--</intent-filter>-->
         </activity>
-
+        <receiver
+            android:name=".Service.AlarmReceiver">
+        </receiver>
         <service android:name=".Service.AppService" />
-        <service android:name=".Service.AlarmService" />
 
         <activity
             android:name=".SettingActivity"

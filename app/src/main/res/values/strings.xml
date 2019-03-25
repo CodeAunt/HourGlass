@@ -20,7 +20,7 @@
 
     <string name="enable_apps_monitor">Enable HourGlass monitor other apps</string>
 
-    <string name="sort_by">Sort by </string>
+    <string name="sort_by"> </string>
 
     <string name="contact">zhouzili98@hotmail.com</string>
 
@@ -51,7 +51,7 @@
     <!--<string name="share">Like and share</string>-->
     <string name="share_text">This is a good app: HourGlass.</string>
     <string name="slogan">Monitor Apps usage</string>
-    <string name="sort">Sort By</string>
+    <string name="sort"> </string>
 
     <string name="toast_permission">Please find \"AppsTimeline\" and grant the permission</string>
     <string name="times">%1$s · %2$d times</string>

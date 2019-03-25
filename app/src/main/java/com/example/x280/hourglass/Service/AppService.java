@@ -32,7 +32,7 @@ public class AppService extends Service {
             } else {
                 mHandler.removeCallbacks(mRepeatCheckTask);
                 Toast.makeText(mContext, R.string.grant_success, Toast.LENGTH_SHORT).show();
-                startService(new Intent(mContext, AlarmService.class));
+                startService(new Intent(mContext, AlarmReceiver.class));
                 Intent intent = new Intent(mContext, Drawer.class); //change to drawer
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
